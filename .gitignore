@@ -1,3 +1,17 @@
+# artifacts
 *.deb
 *.rpm
 *.apk
+
+# dotenv
+.env
+
+# python
+.venv/
+
+# Tests
+*.html
+*.xml
+
+# MacOS
+*.DS_Store
