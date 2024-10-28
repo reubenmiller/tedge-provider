@@ -1,0 +1,43 @@
+operation = "log_upload"
+
+[init]
+action = "proceed"
+on_success = "executing"
+
+[executing]
+action = "proceed"
+on_success = "check"
+
+[check]
+script = "/usr/bin/log_provider check --type ${.payload.type} --check-exit-code 1"
+on_exit.0 = "execute_log_provider"
+on_exit.1 = "process_builtin"
+on_exit._ = "failed"
+
+[execute_log_provider]
+operation = "log_upload_provider"
+input.type = "${.payload.type}"
+input.lines = "${.payload.lines}"
+input.dateFrom = "${.payload.dateFrom}"
+input.dateTo = "${.payload.dateTo}"
+input.searchText = "${.payload.searchText}"
+input.tedgeUrl = "${.payload.tedgeUrl}"
+on_exec = "await-log-handler"
+
+[await-log-handler]
+action = "await-operation-completion"
+on_success = "successful"
+
+[process_builtin]
+operation = "builtin:log_upload"
+on_exec = "wait-for-builtin-log-handler"
+
+[wait-for-builtin-log-handler]
+action = "await-operation-completion"
+on_success = "successful"
+
+[successful]
+action = "cleanup"
+
+[failed]
+action = "cleanup"

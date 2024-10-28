@@ -1,0 +1,19 @@
+operation = "log_upload_provider"
+
+[init]
+action = "proceed"
+on_success = "executing"
+
+[executing]
+action = "proceed"
+on_success = "process"
+
+[process]
+script = "log_provider run --service ${.payload.service} --type ${.payload.type} --max-lines ${.payload.lines} --since ${.payload.dateFrom} --until ${.payload.dateTo} --text ${.payload.searchText} --url ${.payload.tedgeUrl}"
+on_success = "successful"
+
+[successful]
+action = "cleanup"
+
+[failed]
+action = "cleanup"

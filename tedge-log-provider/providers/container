@@ -1,0 +1,87 @@
+#!/bin/sh
+set -e
+
+SERVICE=
+DATE_FROM=${DATE_FROM:-"24h"}
+DATE_TO=${DATE_TO:-"0m"}
+MAX_LINES=${MAX_LINES:-1000}
+
+ACTION="$1"
+shift
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --service)
+            SERVICE="$2"
+            shift
+            ;;
+        --since)
+            DATE_FROM="$2"
+            shift
+            ;;
+        --until)
+            DATE_TO="$2"
+            shift
+            ;;
+        --text)
+            SEARCH_TEXT="$2"
+            shift
+            ;;
+        --max-lines|-n)
+            MAX_LINES="$2"
+            shift
+            ;;
+        --help|-h)
+            ;;
+        *)
+            ;;
+    esac
+    shift
+done
+
+CONTAINER_CLI=
+CONTAINER_CLI_CHOICES="docker podman"
+
+for cmd_name in $CONTAINER_CLI_CHOICES; do
+    if command -V "$cmd_name" >/dev/null 2>&1; then
+        CONTAINER_CLI="$cmd_name"
+    fi
+done
+
+if [ -z "$CONTAINER_CLI" ]; then
+    echo "Could not find a container cli command, e.g. one of $CONTAINER_CLI_CHOICES" >&2
+fi
+
+if ! $CONTAINER_CLI ps >/dev/null 2>&1; then
+    if command -V sudo >/dev/null 2>&1; then
+        CONTAINER_CLI="sudo $CONTAINER_CLI"
+    fi
+fi
+
+list() {
+    #
+    # List the items that can be requested
+    #
+    $CONTAINER_CLI ps --format "{{.Names}}" \
+    | sort
+}
+
+logs() {
+    if [ -z "$SERVICE" ]; then
+        # Use the name of the container rather than the hostname as it human friendly
+        # and strip any leading slash (/)
+        SERVICE=$($CONTAINER_CLI inspect "$(hostname)" --format "{{.Name}}" | sed 's|^/||g')
+    fi
+
+    $CONTAINER_CLI logs -n "$MAX_LINES" --since "$DATE_FROM" --until "$DATE_TO" "$SERVICE" 2>&1    
+}
+
+
+case "$ACTION" in
+    logs)
+        logs
+        ;;
+    list)
+        list
+        ;;
+esac

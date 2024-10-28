@@ -1,0 +1,86 @@
+#!/bin/sh
+set -e
+
+SEARCH_TEXT=
+DATE_FROM=${DATE_FROM:-"24h"}
+DATE_TO=${DATE_TO:-"0m"}
+MAX_LINES=${MAX_LINES:-1000}
+SERVICE=
+
+ACTION="$1"
+shift
+
+format_timestamp() {
+    value="$1"
+    case "$value" in
+        [0-9*]d|[0-9*]h|[0-9*]m|[0-9*]s)
+            echo "$value ago"
+            ;;
+        *T*)
+            date +"%Y-%m-%d %H:%m:%S" -d "$value"
+            ;;
+        *)
+            # Try value without modification
+            echo "$value"
+            ;;
+    esac
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --service)
+            SERVICE="$2"
+            shift
+            ;;
+        --since)
+            DATE_FROM=$(format_timestamp "$2")
+            shift
+            ;;
+        --until)
+            DATE_TO=$(format_timestamp "$2")
+            shift
+            ;;
+        --text)
+            SEARCH_TEXT="$2"
+            shift
+            ;;
+        --max-lines|-n)
+            MAX_LINES="$2"
+            shift
+            ;;
+        --help|-h)
+            ;;
+        *)
+            ;;
+    esac
+    shift
+done
+
+list() {
+    # Add an option to search without a given service name
+    echo "journald"
+
+    # List all of the log files which can be called
+    systemctl list-units --type=service -o json \
+    | jq -r '.[] | select(.unit | startswith("systemd") | not) | .unit |= sub(".service";"") | "journald/" + .unit' \
+    | sort
+}
+
+logs() {
+    echo "DATE_FROM: $DATE_FROM" >&2
+    echo "DATE_TO: $DATE_FROM" >&2
+    if [ -n "$SERVICE" ]; then
+        journalctl --no-pager -n "$MAX_LINES" --since "$DATE_FROM" --until "$DATE_TO" -u "$SERVICE" 2>&1
+    else
+        journalctl --no-pager -n "$MAX_LINES" --since "$DATE_FROM" --until "$DATE_TO" 2>&1    
+    fi
+}
+
+case "$ACTION" in
+    logs)
+        logs
+        ;;
+    list)
+        list
+        ;;
+esac

@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://nfpm.goreleaser.com/static/schema.json
+---
+# nfpm configuration file
+#
+# check https://nfpm.goreleaser.com/configuration for detailed usage
+#
+name: "tedge-log-provider"
+arch: "all"
+platform: "linux"
+version: ${VERSION}
+section: "default"
+priority: "extra"
+maintainer: thin-edge.io <info@thin-edge.io>
+description: "thin-edge.io log provider interface"
+homepage: "https://github.com/thin-edge/tedge-log-provider"
+license: "Apache-2.0"
+
+apk:
+  # Use noarch instead of "all"
+  arch: noarch
+
+contents:
+
+# workflows
+- src: ./log_upload.toml
+  dst: /usr/lib/tedge-log-provider/workflows/log_upload.toml
+  file_info:
+    mode: 0644
+    owner: tedge
+    group: tedge
+
+- src: ./log_upload_provider.toml
+  dst: /usr/lib/tedge-log-provider/workflows/log_upload_provider.toml
+  file_info:
+    mode: 0644
+    owner: tedge
+    group: tedge
+
+# Binaries
+- src: ./log_provider.sh
+  dst: /usr/bin/log_provider
+  file_info:
+    mode: 0755
+
+# Log providers
+- src: ./providers/*
+  dst: /usr/lib/tedge-log-provider/providers
+  file_info:
+    mode: 0755
+
+# Symlinks
+- src: /usr/lib/tedge-log-provider/workflows/log_upload.toml
+  dst: /etc/tedge/operations/log_upload.toml
+  type: symlink
+
+- src: /usr/lib/tedge-log-provider/workflows/log_upload_provider.toml
+  dst: /etc/tedge/operations/log_upload_provider.toml
+  type: symlink
