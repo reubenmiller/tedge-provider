@@ -196,6 +196,11 @@ export_all_settings() {
     #
     # Add each provider type to the tedge-log-plugin.toml
     #
+    if grep -q 'files = \[' "$TEDGE_LOG_PLUGIN"; then
+        log "Unsupported format for editing. Please edit the $TEDGE_LOG_PLUGIN file to use the [[files]] table format"
+        exit 1
+    fi
+
     log "Adding log types to $TEDGE_LOG_PLUGIN"
     for provider in "$PROVIDERS_DIR/"*; do
         log "Executing: $provider list"
