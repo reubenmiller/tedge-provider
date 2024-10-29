@@ -13,7 +13,7 @@ Providers can be added to the following directory.
 /usr/lib/tedge-log-provider/providers
 ```
 
-Each provider must follow the following command signatures:
+Each provider must support the following subcommands:
 
 ```sh
 # List the types that should be added
