@@ -16,9 +16,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: 'stable'
+          cache: false
       - run: go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
         name: Install dependencies
 
