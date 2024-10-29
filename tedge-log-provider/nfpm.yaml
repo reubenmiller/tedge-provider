@@ -22,6 +22,9 @@ apk:
 depends:
   - jq
 
+scripts:
+  postinstall: ./tedge-log-provider/packaging/postinst
+
 contents:
 
 # workflows

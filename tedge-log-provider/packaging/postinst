@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+add_user_to_group() {
+    user="$1"
+    group="$2"
+
+    if ! id -nG "$user" | tr ' ' '\n' | grep -q "^$group$"; then
+        usermod -a -G "$group" "$user" || echo "WARNING: Failed to add user ($user) to group ($group)"
+    else
+        echo "$user is already in the $group group" >&2
+    fi
+}
+
+if command -V journalctl >/dev/null 2>&1; then
+    # Allow user to run journalctl commands without root access
+    add_user_to_group tedge adm
+fi
