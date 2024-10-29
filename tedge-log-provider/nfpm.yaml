@@ -25,14 +25,14 @@ depends:
 contents:
 
 # workflows
-- src: ./log_upload.toml
+- src: ./tedge-log-provider/log_upload.toml
   dst: /usr/lib/tedge-log-provider/workflows/log_upload.toml
   file_info:
     mode: 0644
     owner: tedge
     group: tedge
 
-- src: ./log_upload_provider.toml
+- src: ./tedge-log-provider/log_upload_provider.toml
   dst: /usr/lib/tedge-log-provider/workflows/log_upload_provider.toml
   file_info:
     mode: 0644
@@ -40,13 +40,13 @@ contents:
     group: tedge
 
 # Binaries
-- src: ./log_provider.sh
+- src: ./tedge-log-provider/log_provider.sh
   dst: /usr/bin/log_provider
   file_info:
     mode: 0755
 
 # Log providers
-- src: ./providers/*
+- src: ./tedge-log-provider/providers/*
   dst: /usr/lib/tedge-log-provider/providers
   file_info:
     mode: 0755

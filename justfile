@@ -7,7 +7,7 @@ IMAGE_SRC := env_var_or_default("IMAGE_SRC", "debian-systemd")
 
 # Build packages
 build *ARGS:
-  just -f tedge-log-provider/justfile build
+    ./ci/build.sh {{ARGS}} -- -f tedge-log-provider/nfpm.yaml
 
 # Install python virtual environment
 venv:

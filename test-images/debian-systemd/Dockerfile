@@ -13,6 +13,6 @@ RUN apt-get update \
 
 RUN echo "tedge  ALL = (ALL) NOPASSWD: /usr/bin/container-cli, /usr/bin/podman, /usr/bin/docker, /usr/bin/log_provider" | tee /etc/sudoers.d/tedge-containers
 
-COPY tedge-log-provider/*.deb /tmp/
+COPY dist/*.deb /tmp/
 RUN apt-get install -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" --allow-downgrades -y /tmp/*.deb \
     && rm -f /tmp/*.deb

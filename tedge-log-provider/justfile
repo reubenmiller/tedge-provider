@@ -1,8 +1,0 @@
-set positional-arguments
-set dotenv-load
-
-# Build packages
-build *ARGS:
-    nfpm package -p apk
-    nfpm package -p deb
-    nfpm package -p rpm

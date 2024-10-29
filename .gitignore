@@ -1,7 +1,5 @@
 # artifacts
-*.deb
-*.rpm
-*.apk
+dist/
 
 # dotenv
 .env
