@@ -12,7 +12,7 @@ section: "default"
 priority: "extra"
 maintainer: thin-edge.io <info@thin-edge.io>
 description: "thin-edge.io log provider interface"
-homepage: "https://github.com/thin-edge/tedge-log-provider"
+homepage: "https://github.com/reubenmiller/tedge-provider"
 license: "Apache-2.0"
 
 apk:
