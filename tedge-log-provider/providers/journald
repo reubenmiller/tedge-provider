@@ -17,7 +17,7 @@ format_timestamp() {
             echo "$value ago"
             ;;
         *T*)
-            date +"%Y-%m-%d %H:%m:%S" -d "$value"
+            date +"%Y-%m-%d %H:%M:%S" -d "$value"
             ;;
         *)
             # Try value without modification
