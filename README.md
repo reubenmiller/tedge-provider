@@ -117,5 +117,7 @@ The following shows how to add your own log provider to retrieve logs from a cus
 3. Add the log types to the `tedge-log-plugin.toml` from each provider by running the following command:
 
     ```sh
-    log_provider export-all
+    log_provider export-all 2>&1
     ```
+
+    **Note** The above command can also be executed via the Cumulocity shell interface
