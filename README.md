@@ -80,7 +80,7 @@ The following shows how to add your own log provider to retrieve logs from a cus
         # Print 1 item per line to stdout, with the format "<provider>/<log_instance>"
         provider_name=$(basename "$0")
         echo "$provider_name/instance1"
-        echo "$provider_name/instace2"
+        echo "$provider_name/instance2"
     }
 
     logs() {
