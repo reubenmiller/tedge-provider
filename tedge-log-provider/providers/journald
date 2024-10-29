@@ -68,8 +68,9 @@ list() {
 
 logs() {
     echo "DATE_FROM: $DATE_FROM" >&2
-    echo "DATE_TO: $DATE_FROM" >&2
+    echo "DATE_TO: $DATE_TO" >&2
     if [ -n "$SERVICE" ]; then
+        echo "Filtering by unit: $SERVICE" >&2
         journalctl --no-pager -n "$MAX_LINES" --since "$DATE_FROM" --until "$DATE_TO" -u "$SERVICE" 2>&1
     else
         journalctl --no-pager -n "$MAX_LINES" --since "$DATE_FROM" --until "$DATE_TO" 2>&1    
