@@ -7,7 +7,7 @@
 name: "tedge-log-provider"
 arch: "all"
 platform: "linux"
-version: ${VERSION}
+version: ${SEMVER}
 section: "default"
 priority: "extra"
 maintainer: thin-edge.io <info@thin-edge.io>
