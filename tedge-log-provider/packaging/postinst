@@ -16,3 +16,6 @@ if command -V journalctl >/dev/null 2>&1; then
     # Allow user to run journalctl commands without root access
     add_user_to_group tedge adm
 fi
+
+# try adding the log entries into the tedge-log-plugin.toml config
+log_provider export-all 2>&1 ||:
