@@ -4,9 +4,6 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         # Install with all recommended packages as this is simplier to maintain
         podman \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" -y --no-install-recommends \
-        # Docker cli
-        docker-ce-cli \
     && tedge config unset c8y.proxy.client.host \
     && tedge config unset mqtt.client.host \
     && tedge config unset http.client.host
